@@ -63,12 +63,3 @@ module.exports = router;
 
 
 
-// Set up routes and middleware
-
-// Serve static files
-app.use('/uploads', express.static('uploads'));
-
-// Start the server
-app.listen(3000, () => {
-  console.log('Server is running on port 3000');
-});

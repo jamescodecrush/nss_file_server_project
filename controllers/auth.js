@@ -1,6 +1,7 @@
 const mysql = require("mysql");
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
+const async = require("hbs/lib/async");
 
 
 const db = mysql.createConnection({
@@ -10,6 +11,8 @@ const db = mysql.createConnection({
     database: process.env.DATABASE
     
 });
+
+// ---REGISRATION-----
 
 
 exports.register = (req, res) =>{
@@ -37,7 +40,8 @@ db.query('SELECT email FROM users WHERE email = ?', [email], async (error, resul
 let hashedPassword = await bcrypt.hash(password, 8);
 console.log(hashedPassword);
 
-db.query('INSERT INTO users SET ?', {username: username, email: email, password: hashedPassword }, (error, results) =>{
+db.query(
+    'INSERT INTO users (username, email, password ) VALUES(?, ?, ?)', [name, email, hashedPassword], (error, results) =>{
     if(error){
         console.log(error)
     } else {
@@ -50,6 +54,49 @@ db.query('INSERT INTO users SET ?', {username: username, email: email, password:
 })
  
 });
-    
  
 }
+
+
+//---LOGGIN IN Authentication------
+
+exports.login = (req, res) =>{
+
+
+    console.log(req.body);
+
+const { email, password } = req.body;
+
+db.query( 'SELECT * from users where email = ?', [email], async( error, results, fields) => {
+
+    if(results.length === 0){
+        return res.render('login', {
+            message: 'That email does not exist'
+        });
+
+    }  else {
+        const user = results[0];
+        const CorrectPassword = await bcrypt.compare ( password, user.password);
+        if (!CorrectPassword) {
+            return res.render('login', {
+                message: 'The password is incorrect'
+            });
+        }
+
+    else {
+        return res.render( 'home_profile', {
+            message: 'Welcome ' + user.name,
+        });
+    }
+    
+
+
+
+
+
+}  
+
+
+
+});
+};
