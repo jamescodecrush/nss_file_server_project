@@ -5,7 +5,9 @@ const mysql = require('mysql');
 const dotenv = require('dotenv');
 dotenv.config({ path: './.env'});
 
-const app = express();
+const app = express()
+console.log(process.env.DATABASE_HOST)
+// returnn 
 const db = mysql.createConnection({
     host: process.env.DATABASE_HOST, 
     user: process.env.DATABASE_USER,
@@ -29,6 +31,7 @@ app.use(express.json());
 
 
 app.set('view engine', 'hbs');
+app.set('views', path.join(__dirname, 'src/views')); // Replace 'views' with your actual directory path
 
 db.connect(  (error) => {
     if(error) {
@@ -40,8 +43,8 @@ db.connect(  (error) => {
 })
 
 //Define Routes
-app.use('/', require('./routes/pages'));
-app.use('/auth', require('./routes/auth'));
+app.use('/', require('./src/routes/pages'));
+app.use('/auth', require('./src/routes/auth'));
 
 app.listen(7005, () => {
 
