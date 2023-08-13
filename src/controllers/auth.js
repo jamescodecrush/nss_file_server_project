@@ -85,7 +85,7 @@ db.query( 'SELECT * from users where email = ?', [email], async( error, results,
 
     else {
         return res.render( 'home_profile', {
-            message: 'Welcome ' + user.name,
+            message: 'Welcome ' + user.username,
         });
     }
     
