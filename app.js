@@ -31,7 +31,7 @@ app.use(express.json());
 
 
 app.set('view engine', 'hbs');
-app.set('views', path.join(__dirname + './src/views')); // Replace 'views' with your actual directory path
+app.set('views', path.join(__dirname + '/src/views')); // Replace 'views' with your actual directory path
 
 db.connect(  (error) => {
     if(error) {
