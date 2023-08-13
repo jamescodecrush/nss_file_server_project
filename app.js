@@ -43,8 +43,8 @@ db.connect(  (error) => {
 })
 
 //Define Routes
-app.use('/', require('./src/routes/pages'));
-app.use('/auth', require('./src/routes/auth'));
+app.use('/', require('./routes/pages'));
+app.use('/auth', require('./routes/auth'));
 
 app.listen(7005, () => {
 
